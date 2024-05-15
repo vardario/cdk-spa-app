@@ -203,7 +203,7 @@ export class SpaApp extends Construct {
     });
 
     this.stackProps.domain &&
-      new r53.ARecord(this, 'SvelteAlias', {
+      new r53.ARecord(this, 'SpaAppAlias', {
         recordName: `${this.stackProps.domain.domainName}.`,
         target: r53.RecordTarget.fromAlias(new r53t.CloudFrontTarget(cloudfrontDistribution)),
         zone: this.stackProps.domain.hostedZone
