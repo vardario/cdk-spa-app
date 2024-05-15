@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "deploy",
+  "type": "module",
+  "bin": {
+    "deploy": "bin/deploy.js"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "cdk-deploy": "cdk deploy --outputs-file ./cdk.outputs.json",
+    "cdk-destroy": "cdk destroy",
+    "cdk-synth": "cdk synth"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "@vardario/cdk-spa-app": "workspace:*",
+    "aws-cdk": "*",
+    "aws-cdk-lib": "*",
+    "constructs": "*",
+    "esbuild": "^0.17.17",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
+  }
+}

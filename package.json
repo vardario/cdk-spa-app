@@ -1,0 +1,59 @@
+{
+  "name": "@vardario/cdk-spa-app",
+  "version": "0.0.0-development",
+  "description": "CDK construct to deploy a SPA app to AWS",
+  "license": "MIT",
+  "author": "Sahin Vardar",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vardario/cdk-spa-app.git"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "format": "prettier --plugin-search-dir . --write . && prettier-package-json --write && eslint --fix .",
+    "prepare": "husky install",
+    "repo-clean": "git clean -xdf -e .env",
+    "semantic-release": "semantic-release",
+    "test": "vitest run",
+    "watch": "tsc --build --watch",
+    "build:example": "pnpm --filter react-app build && pnpm --filter svelte-app build",
+    "cdk-deploy": "pnpm build:example && pnpm --filter deploy cdk-deploy",
+    "cdk-synth": "pnpm build:example && pnpm --filter deploy cdk-synth"
+  },
+  "peerDependencies": {
+    "aws-cdk-lib": "2.x",
+    "constructs": "^10.x"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.9.4",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "aws-cdk-lib": "^2.110.1",
+    "constructs": "^10.3.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-typescript-sort-keys": "^3.1.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0",
+    "prettier-package-json": "^2.8.0",
+    "semantic-release": "^22.0.8",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown",
+      "eslint --fix"
+    ],
+    "package.json": "prettier-package-json --write"
+  },
+  "packageManager": "pnpm@9.1.0"
+}
