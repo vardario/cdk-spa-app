@@ -15,15 +15,15 @@
   ],
   "scripts": {
     "build": "tsc --build",
+    "build:example": "pnpm --filter react-app build && pnpm --filter svelte-app build",
+    "cdk-deploy": "pnpm build:example && pnpm --filter deploy cdk-deploy",
+    "cdk-synth": "pnpm build:example && pnpm --filter deploy cdk-synth",
     "format": "prettier --plugin-search-dir . --write . && prettier-package-json --write && eslint --fix .",
     "prepare": "husky install",
     "repo-clean": "git clean -xdf -e .env",
     "semantic-release": "semantic-release",
     "test": "vitest run",
-    "watch": "tsc --build --watch",
-    "build:example": "pnpm --filter react-app build && pnpm --filter svelte-app build",
-    "cdk-deploy": "pnpm build:example && pnpm --filter deploy cdk-deploy",
-    "cdk-synth": "pnpm build:example && pnpm --filter deploy cdk-synth"
+    "watch": "tsc --build --watch"
   },
   "peerDependencies": {
     "aws-cdk-lib": "2.x",
@@ -47,6 +47,9 @@
     "semantic-release": "^22.0.8",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "lint-staged": {
     "*": [
