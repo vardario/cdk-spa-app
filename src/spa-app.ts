@@ -18,15 +18,6 @@ import { Construct } from 'constructs';
 
 export interface SpaAppConstructProps {
   /**
-   * The name for the backing s3 Bucket.
-   *
-   * Remarks
-   *  In case you define a @see domainName, the name of the bucket will be
-   *  the same as @see domainName
-   */
-  bucketName?: string;
-
-  /**
    * Optional config object which will be used to generate a `config.json` file
    * in the root of the SpaApp deployment.
    *
@@ -96,10 +87,7 @@ export class SpaApp extends Construct {
   public readonly cloudFrontUrl: string;
 
   createBucket() {
-    const bucketName = (this.stackProps.domain && this.stackProps.domain.domainName) || this.stackProps.bucketName;
-
     const bucket = new s3.Bucket(this, 'SpaAppBucket', {
-      bucketName,
       removalPolicy: this.stackProps.removalPolicy,
       autoDeleteObjects: this.stackProps.removalPolicy === RemovalPolicy.DESTROY
     });
@@ -121,10 +109,11 @@ export class SpaApp extends Construct {
       `find ${this.stackProps.spaBuildPath} -mindepth 1 -maxdepth 1 -type d -exec cp -r {} ${otherFilesDir} \\;`
     );
 
-    new s3d.BucketDeployment(this, 'SpaAppIndexDeployment', {
+    new s3d.BucketDeployment(this, 'SpaAppRootFilesDeployment', {
       destinationBucket: bucket,
       sources: [s3d.Source.asset(rootFilesDir)],
       cacheControl: [s3d.CacheControl.fromString('max-age=0, no-cache, no-store, must-revalidate')],
+      exclude: ['config.json'],
       prune: false
     });
 
