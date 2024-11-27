@@ -173,7 +173,7 @@ export class SpaApp extends Construct {
       httpVersion: cf.HttpVersion.HTTP2,
       minimumProtocolVersion: cf.SecurityPolicyProtocol.TLS_V1_2_2021,
       defaultBehavior: {
-        origin: new cfo.S3Origin(bucket),
+        origin: cfo.S3BucketOrigin.withOriginAccessControl(bucket),
         allowedMethods: cf.AllowedMethods.ALLOW_ALL,
         viewerProtocolPolicy: cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
       },
