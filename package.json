@@ -26,7 +26,7 @@
     "watch": "tsc --build --watch"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "2.x",
+    "aws-cdk-lib": "^2.171.x",
     "constructs": "^10.x"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "@types/node": "^20.9.4",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
-    "aws-cdk-lib": "^2.110.1",
+    "aws-cdk-lib": "^2.171.0",
     "constructs": "^10.3.0",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
