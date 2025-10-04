@@ -22,7 +22,6 @@
     "prepare": "husky install",
     "repo-clean": "git clean -xdf -e .env",
     "semantic-release": "semantic-release",
-    "test": "vitest run",
     "watch": "tsc --build --watch"
   },
   "peerDependencies": {
@@ -45,8 +44,7 @@
     "prettier": "^3.1.0",
     "prettier-package-json": "^2.8.0",
     "semantic-release": "^22.0.8",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "typescript": "^5.2.2"
   },
   "publishConfig": {
     "access": "public"
