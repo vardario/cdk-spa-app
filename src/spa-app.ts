@@ -18,6 +18,11 @@ import { Construct } from 'constructs';
 
 export interface SpaAppConstructProps {
   /**
+   * Optional existing CloudFront distribution to use instead of creating a new one.
+   */
+  cloudfrontDistribution?: cf.Distribution;
+
+  /**
    * Optional config object which will be used to generate a `config.json` file
    * in the root of the SpaApp deployment.
    *
@@ -37,8 +42,9 @@ export interface SpaAppConstructProps {
   config?: any;
 
   /**
-   * When specifying the `domain` prop, this construct will also create a `CloudFrond` distribution and will
-   * create the Route53 records for the domain and will take care to connect the provided SSL certificates.
+   * When specifying the `domain` prop and no external CloudFront distribution is provided,
+   * this construct will use the given domain name and certificate to set up a new CloudFront distribution,
+   * and will create the corresponding Route53 records.
    */
   domain?: {
     /**
@@ -85,6 +91,24 @@ export class SpaApp extends Construct {
   public readonly cloudfrontDistribution: cf.Distribution;
   public readonly appUrl: string;
   public readonly cloudFrontUrl: string;
+
+  constructor(
+    scope: Construct,
+    id: string,
+    private readonly stackProps: SpaAppConstructProps
+  ) {
+    super(scope, id);
+
+    this.stackProps.removalPolicy = this.stackProps.removalPolicy || RemovalPolicy.DESTROY;
+
+    this.bucket = this.createBucket();
+    this.createConfig(this.bucket);
+    this.cloudfrontDistribution =
+      this.stackProps.cloudfrontDistribution || this.createCloudFrontDistribution(this.bucket);
+
+    this.cloudFrontUrl = `https://${this.cloudfrontDistribution.domainName}`;
+    this.appUrl = (this.stackProps.domain && `https://${this.stackProps.domain.domainName}`) || this.cloudFrontUrl;
+  }
 
   createBucket() {
     const bucket = new s3.Bucket(this, 'SpaAppBucket', {
@@ -199,22 +223,5 @@ export class SpaApp extends Construct {
       });
 
     return cloudfrontDistribution;
-  }
-
-  constructor(
-    scope: Construct,
-    id: string,
-    private readonly stackProps: SpaAppConstructProps
-  ) {
-    super(scope, id);
-
-    this.stackProps.removalPolicy = this.stackProps.removalPolicy || RemovalPolicy.DESTROY;
-
-    this.bucket = this.createBucket();
-    this.createConfig(this.bucket);
-    this.cloudfrontDistribution = this.createCloudFrontDistribution(this.bucket);
-
-    this.cloudFrontUrl = `https://${this.cloudfrontDistribution.domainName}`;
-    this.appUrl = (this.stackProps.domain && `https://${this.stackProps.domain.domainName}`) || this.cloudFrontUrl;
   }
 }
